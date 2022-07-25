@@ -8,6 +8,7 @@ authors = ["Aniruddha Adhikary <aniruddha@adhikary.net>"]
 python = "^3.8"
 Django = "^4.0.6"
 django-fsm = "^2.8.0"
+Pillow = "^9.2.0"
 
 [tool.poetry.dev-dependencies]
 
