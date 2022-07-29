@@ -20,10 +20,11 @@ class Feedback(models.Model):
     description = models.TextField()
     status = FSMField(default=FeedbackStatus.NEW)
 
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
-                                   related_name='created_feedbacks')
+    organisation = models.ForeignKey('orgs.Organisation', on_delete=models.PROTECT,
+                                     related_name='feedbacks', blank=True, null=True)
+
     assigned_to = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
-                                    related_name='assigned_feedbacks')
+                                    related_name='assigned_feedbacks', blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -44,7 +45,8 @@ class Feedback(models.Model):
     def mark_work_in_progress(self):
         pass
 
-    @transition(field=status, source=[FeedbackStatus.WORK_IN_PROGRESS, FeedbackStatus.ASSESSING], target=FeedbackStatus.RESOLVED)
+    @transition(field=status, source=[FeedbackStatus.WORK_IN_PROGRESS, FeedbackStatus.ASSESSING],
+                target=FeedbackStatus.RESOLVED)
     def resolve(self):
         pass
 
@@ -80,6 +82,23 @@ class FeedbackNote(models.Model):
     feedback = models.ForeignKey('Feedback', on_delete=models.CASCADE)
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Category(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    associated_organisation = models.ForeignKey(
+        'orgs.Organisation',
+        on_delete=models.PROTECT,
+        related_name='categories'
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
