@@ -15,12 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
-from feedbacks.views import FeedbackCreateView, enquire_feedback
+from feedbacks.views import FeedbackCreateView, enquire_feedback, FeedbackViewSet
+
+router = DefaultRouter()
+router.register('feedbacks', FeedbackViewSet, basename='feedback')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('rest_framework.urls')),
+    path('api-docs/', include('rest_framework.urls')),
+    path('api/', include(router.urls)),
     path('feedbacks/new', FeedbackCreateView.as_view()),
     path('feedbacks/enquire', enquire_feedback),
 ]

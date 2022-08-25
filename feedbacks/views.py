@@ -1,8 +1,10 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.views.generic import CreateView
+from rest_framework import viewsets, mixins
 
 from feedbacks.models import Feedback
+from feedbacks.serializers import FeedbackSerializer
 
 
 class FeedbackCreateView(SuccessMessageMixin, CreateView):
@@ -23,3 +25,11 @@ def enquire_feedback(request):
     return render(request, 'feedbacks/feedback_enquiry.html', {
         'page_title': 'Enquire Feedback'
     })
+
+
+class FeedbackViewSet(mixins.RetrieveModelMixin,
+                      mixins.UpdateModelMixin,
+                      mixins.DestroyModelMixin,
+                      viewsets.GenericViewSet):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer

@@ -10,6 +10,8 @@ class Organisation(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
+    public_key = models.TextField(blank=True, default='')
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
