@@ -19,7 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 from django.views import generic
 
-from feedbacks.admin_views import FeedbackUpdateView, FeedbackNoteCreateView
+from feedbacks.admin_views import FeedbackUpdateView, FeedbackNoteCreateView, FeedbackListView
 from feedbacks.views import FeedbackCreateView, EnquireFeedbackView, \
     EnquireFeedbackSearchView
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('feedbacks/new', FeedbackCreateView.as_view(), name='feedback-new'),
     path('feedbacks/enquire', EnquireFeedbackSearchView.as_view(), name='feedback-search'),
+    path('feedbacks/', FeedbackListView.as_view(), name='feedback-list'),
     path('feedbacks/<uuid:pk>', EnquireFeedbackView.as_view(), name='feedback-detail'),
     path('feedbacks/<uuid:pk>/update', login_required(FeedbackUpdateView.as_view()), name='feedback-update'),
     path('feedbacks/<uuid:pk>/notes/new', login_required(FeedbackNoteCreateView.as_view()), name='feedback_note-new'),

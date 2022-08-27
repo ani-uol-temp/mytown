@@ -6,15 +6,16 @@ from django_fsm import FSMField, transition
 from django.utils.translation import gettext_lazy as _
 
 
-class Feedback(models.Model):
-    class FeedbackStatus(models.TextChoices):
-        NEW = 'new', _('New')
-        ASSESSING = 'assessing', _('Assessing')
-        WORK_IN_PROGRESS = 'in_progress', _('Work In Progress')
-        RESOLVED = 'resolved', _('Resolved')
-        CLOSED = 'closed', _('Closed')
-        INVALID = 'invalid', _('Invalid')
+class FeedbackStatus(models.TextChoices):
+    NEW = 'new', _('New')
+    ASSESSING = 'assessing', _('Assessing')
+    WORK_IN_PROGRESS = 'in_progress', _('Work In Progress')
+    RESOLVED = 'resolved', _('Resolved')
+    CLOSED = 'closed', _('Closed')
+    INVALID = 'invalid', _('Invalid')
 
+
+class Feedback(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     title = models.CharField(max_length=255, help_text=_('A short title summarising your report.'))
     description = models.TextField(help_text=_('A description of what happened.'))

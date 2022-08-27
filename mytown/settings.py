@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bulma',
     'crispy_forms',
     'crispy_bulma',
+    'django_filters',
     'rest_framework',
 
     'allauth',

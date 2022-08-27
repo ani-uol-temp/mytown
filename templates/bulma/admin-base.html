@@ -30,11 +30,11 @@
 
             <div id="navMenuExample" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item {% if request.resolver_match.url_name == "feedback-new" %}is-active{% endif %}" href="/feedbacks/new">
-                        New Feedback
+                    <a class="navbar-item" href="/feedbacks/new">
+                        User Mode
                     </a>
-                    <a class="navbar-item {% if request.resolver_match.url_name == "feedback-search" %}is-active{% endif %}" href="/feedbacks/enquire">
-                        Enquiries
+                    <a class="navbar-item {% if request.resolver_match.url_name == "feedback-list" %}is-active{% endif %}" href="/feedbacks">
+                        Feedbacks
                     </a>
                 </div>
 

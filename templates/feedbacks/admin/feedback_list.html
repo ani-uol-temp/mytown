@@ -1,0 +1,48 @@
+{% extends 'bulma/admin-base.html' %}
+{% load bulma_tags %}
+
+{% block title %}View Feedback{% endblock %}
+
+{% block content %}
+    <h2 class="title">Feedbacks List</h2>
+    <table class="table is-striped">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Created at</th>
+            <th>Updated at</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for feedback in object_list %}
+            <tr>
+                <td><a href="{% url "feedback-update" pk=feedback.pk %}">{{ feedback.title | truncatechars:25 }}</a>
+                </td>
+                <td>{{ feedback.status }}</td>
+                <td>{{ feedback.created_at | date }} {{ feedback.created_at | time }}</td>
+                <td>{{ feedback.updated_at | date }} {{ feedback.updated_at | time }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <div class="pagination">
+    <span class="step-links">
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+    <br>
+
+        {% if page_obj.has_previous %}
+            <a class="button is-info" href="?page=1">&laquo; first</a>
+            <a class="button is-info" href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+            <a class="button is-info" href="?page={{ page_obj.next_page_number }}">next</a>
+            <a class="button is-info" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+    </div>
+{% endblock content %}

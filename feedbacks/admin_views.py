@@ -4,11 +4,10 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, ListView
 
 from feedbacks.forms import FeedbackNoteForm
 from feedbacks.models import Feedback, FeedbackNote
-
 
 class PermissionRequiredMixin:
     permissions = []
@@ -17,20 +16,18 @@ class PermissionRequiredMixin:
         return self.request.user.has_perms(self.permissions)
 
     def dispatch(self, request, *args, **kwargs):
-        # if not self.request.user:
-        #     raise PermissionDenied("You need to be logged in.")
-
         if not self.has_all_permissions():
             raise PermissionDenied("You do not have permissions to perform: " + ", ".join(self.permissions))
 
         return super().dispatch(request, *args, **kwargs)
 
 
+@method_decorator(login_required, 'dispatch')
 class FeedbackUpdateView(PermissionRequiredMixin, SuccessMessageMixin, DetailView):
     permissions = ['change_feedback']
 
     model = Feedback
-    template_name = 'feedbacks/feedback_update.html'
+    template_name = 'feedbacks/admin/feedback_update.html'
     success_url = '/feedbacks/update'
     success_message = "Your Feedback (ID %(calculated_field)s) was created successfully! " \
                       "Please keep track of your ID for future enquiries."
@@ -67,11 +64,12 @@ class FeedbackUpdateView(PermissionRequiredMixin, SuccessMessageMixin, DetailVie
         return ctx
 
 
+@method_decorator(login_required, 'dispatch')
 class FeedbackNoteCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     permissions = ['add_feedbacknote']
     model = FeedbackNote
     form_class = FeedbackNoteForm
-    template_name = 'feedbacks/feedback_note_create.html'
+    template_name = 'feedbacks/admin/feedback_note_create.html'
     success_message = "Your Note was recorded successfully."
 
     def get_context_data(self, **kwargs):
@@ -87,3 +85,15 @@ class FeedbackNoteCreateView(PermissionRequiredMixin, SuccessMessageMixin, Creat
 
     def get_success_url(self):
         return reverse('feedback-update', kwargs={'pk': self.kwargs['pk']})
+
+
+@method_decorator(login_required, 'dispatch')
+class FeedbackListView(PermissionRequiredMixin, SuccessMessageMixin, ListView):
+    permissions = ['change_feedback']
+    model = Feedback
+    template_name = 'feedbacks/admin/feedback_list.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return super().get_queryset().order_by('-created_at')
+

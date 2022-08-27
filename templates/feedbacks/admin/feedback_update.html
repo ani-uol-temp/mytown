@@ -7,6 +7,8 @@
     <div>
         <p><strong>Feedback ID</strong>: {{ feedback.id }}</p>
         <p><strong>Status</strong>: {{ feedback.status | capfirst }}</p>
+        <p><strong>Organisation</strong>: {{ feedback.organisation.name | capfirst }}</p>
+        <p><strong>Category</strong>: {{ feedback.category.title | capfirst }}</p>
         <p><strong>Filed on</strong>: {{ feedback.created_at | date }}</p>
         <p><strong>Last Updated on</strong>: {{ feedback.updated_at | date }}</p>
 
