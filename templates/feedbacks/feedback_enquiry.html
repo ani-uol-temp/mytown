@@ -1,5 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'bulma/base.html' %}
+{% load bulma_tags %}
 
-{% block body %}
-    <h2>Enquire Feedback</h2>
+{% block content %}
+    <h1 class="title">Enquire Feedback</h1>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form | bulma }}
+        <input class="button is-success" type="submit" value="Search">
+    </form>
 {% endblock %}

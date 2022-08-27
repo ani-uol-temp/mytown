@@ -1,0 +1,47 @@
+{% extends 'bulma/admin-base.html' %}
+{% load bulma_tags %}
+
+{% block title %}View Feedback{% endblock %}
+
+{% block content %}
+    <div>
+        <p><strong>Feedback ID</strong>: {{ feedback.id }}</p>
+        <p><strong>Status</strong>: {{ feedback.status | capfirst }}</p>
+        <p><strong>Filed on</strong>: {{ feedback.created_at | date }}</p>
+        <p><strong>Last Updated on</strong>: {{ feedback.updated_at | date }}</p>
+
+        <blockquote>
+            <h5 class="title">{{ feedback.title }}</h5>
+            <section>{{ feedback.description }}</section>
+        </blockquote>
+    </div>
+
+    <br>
+    <form method="POST">
+        {% csrf_token %}
+        {% for transition in transitions %}
+            <button type="submit" name="action" value="{{ transition.name }}" class="button is-info">{{ transition.name }}</button>
+        {% endfor %}
+    </form>
+
+    <br>
+    <h1 class="subtitle">Updates</h1>
+
+    <a class="button is-warning" href="{% url "feedback_note-new" pk=object.pk %}">New Update</a>
+    <br><br>
+    {% if not feedback.feedbacknote_set.all.exists %}
+        <div>No Updates Yet.</div>
+    {% endif %}
+
+    <div>
+        {% for note in feedback.feedbacknote_set.all %}
+            <blockquote>
+                <h2 class="subtitle">{{ note.title }}</h2>
+                <p class="text-muted">{{ note.visibility | capfirst }}</p>
+                <p class="text-muted">{{ note.created_at | date }} {{ note.created_at | time }}</p>
+
+                <p>{{ note.description }}</p>
+            </blockquote>
+        {% endfor %}
+    </div>
+{% endblock content %}

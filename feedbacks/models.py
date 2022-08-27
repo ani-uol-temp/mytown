@@ -16,9 +16,16 @@ class Feedback(models.Model):
         INVALID = 'invalid', _('Invalid')
 
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
+    title = models.CharField(max_length=255, help_text=_('A short title summarising your report.'))
+    description = models.TextField(help_text=_('A description of what happened.'))
+
+    photo_1 = models.ImageField(blank=True, null=True, default=None, verbose_name=_('Photo 1 (Optional)'))
+    photo_2 = models.ImageField(blank=True, null=True, default=None, verbose_name=_('Photo 2 (Optional)'))
+    photo_3 = models.ImageField(blank=True, null=True, default=None, verbose_name=_('Photo 3 (Optional)'))
+
     status = FSMField(default=FeedbackStatus.NEW)
+
+    category = models.ForeignKey('Category', blank=True, null=True, on_delete=models.CASCADE)
 
     organisation = models.ForeignKey('orgs.Organisation', on_delete=models.PROTECT,
                                      related_name='feedbacks', blank=True, null=True)
@@ -50,40 +57,42 @@ class Feedback(models.Model):
     def resolve(self):
         pass
 
+    @transition(field=status, source=[FeedbackStatus.CLOSED],
+                target=FeedbackStatus.ASSESSING)
+    def reopen(self):
+        pass
+
     def __str__(self):
         return self.title
 
 
-class FeedbackPhoto(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    image = models.ImageField()
-    feedback = models.ForeignKey('Feedback', on_delete=models.CASCADE)
+class FeedbackVisibility(models.TextChoices):
+    PUBLIC = 'public', _('Public')
+    INTERNAL = 'internal', _('Internal')
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        try:
-            return self.image.path
-        except (AttributeError, TypeError):
-            return self.id
+class FeedbackNoteManager(models.Manager):
+    def public_only(self):
+        return self.filter(visibility=FeedbackVisibility.PUBLIC)
 
 
 class FeedbackNote(models.Model):
-    class FeedbackVisibility(models.TextChoices):
-        PUBLIC = 'public', _('Public')
-        INTERNAL = 'internal', _('Internal')
-
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
 
-    visibility = models.CharField(max_length=10, choices=FeedbackVisibility.choices)
+    visibility = models.CharField(max_length=10, choices=FeedbackVisibility.choices,
+                                  default=FeedbackVisibility.INTERNAL)
     feedback = models.ForeignKey('Feedback', on_delete=models.CASCADE)
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = FeedbackNoteManager()
+
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.title

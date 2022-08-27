@@ -4,6 +4,7 @@
 {% block title %}Submit Feedback{% endblock %}
 
 {% block content %}
+    <h1 class="title">Submit New Feedback / Complaint</h1>
     <form method="post">
         {% csrf_token %}
         {{ form | bulma }}

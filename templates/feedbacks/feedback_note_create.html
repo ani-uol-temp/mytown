@@ -1,0 +1,20 @@
+{% extends 'bulma/admin-base.html' %}
+{% load bulma_tags %}
+
+{% block title %}Submit Feedback Note{% endblock %}
+
+{% block content %}
+    <h1 class="title">Submit Feedback Note</h1>
+
+    <blockquote>
+        <h5 class="title">{{ feedback.title }}</h5>
+        <h6 class="subtitle">{{ feedback.created_at | date }}{{ feedback.created_at | time }}</h6>
+        <section>{{ feedback.description }}</section>
+    </blockquote>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form | bulma }}
+        <input class="button is-success" type="submit" value="Submit Note">
+    </form>
+{% endblock content %}

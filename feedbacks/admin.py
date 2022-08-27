@@ -1,12 +1,6 @@
 from django.contrib import admin
 
-from feedbacks.models import Feedback, FeedbackNote, FeedbackPhoto
-
-
-class FeedbackPhotoInlineAdmin(admin.TabularInline):
-    model = FeedbackPhoto
-    extra = 0
-    readonly_fields = ['id']
+from feedbacks.models import Feedback, FeedbackNote
 
 
 class FeedbackNoteInlineAdmin(admin.StackedInline):
@@ -17,6 +11,11 @@ class FeedbackNoteInlineAdmin(admin.StackedInline):
 
 @admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
-    inlines = [FeedbackPhotoInlineAdmin, FeedbackNoteInlineAdmin]
+    inlines = [FeedbackNoteInlineAdmin]
     list_display = ['title', 'status', 'created_at']
-    readonly_fields = ['id']
+    readonly_fields = [
+        'status', 'id',
+        'created_at', 'updated_at',
+        'title', 'description',
+        'photo_1', 'photo_2', 'photo_3',
+    ]

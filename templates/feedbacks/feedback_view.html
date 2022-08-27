@@ -1,0 +1,31 @@
+{% extends 'bulma/base.html' %}
+{% load bulma_tags %}
+
+{% block title %}View Feedback{% endblock %}
+
+{% block content %}
+    <h1 class="subtitle">Your Feedback</h1>
+    <div>
+        <p><strong>Feedback ID</strong>: {{ feedback.id }}</p>
+        <p><strong>Status</strong>: {{ feedback.status | capfirst }}</p>
+        <p><strong>Filed on</strong>: {{ feedback.created_at | date }}</p>
+        <p><strong>Last Updated on</strong>: {{ feedback.updated_at | date }}</p>
+    </div>
+    <br>
+    <h1 class="subtitle">Updates</h1>
+
+    {% if not feedback.feedbacknote_set.public_only.exists %}
+        <div>No Updates Yet.</div>
+    {% endif %}
+
+    <div>
+        {% for note in feedback.feedbacknote_set.public_only %}
+            <blockquote>
+                <h2 class="subtitle">{{ note.title }}</h2>
+                <p class="text-muted">{{ note.created_at | date }} {{ note.created_at | time }}</p>
+
+                <p>{{ note.description }}</p>
+            </blockquote>
+        {% endfor %}
+    </div>
+{% endblock content %}
