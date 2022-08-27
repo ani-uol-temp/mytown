@@ -1,0 +1,20 @@
+{% extends 'bulma/admin-base.html' %}
+{% load bulma_tags %}
+{% load static %}
+
+{% block title %}Set Private Key{% endblock %}
+
+{% block content %}
+    <h1 class="title">Set Private Key</h1>
+    For Decrypting your complaints, set your private key. The key never leaves your computer.
+    <br><br>
+    <textarea class="textarea" placeholder="-----BEGIN RSA PRIVATE KEY----" id="text_private_key"></textarea>
+    <br>
+    <a href="#" class="button is-primary" id="set_private_key">Set Private Key</a>
+    <a href="#" class="button is-danger" id="clear_private_key">Clear Private Key</a>
+{% endblock content %}
+
+{% block extra_javascript %}
+    <script type="text/javascript" src="{% static "js/jsencrypt.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/keychain.js" %}"></script>
+{% endblock %}

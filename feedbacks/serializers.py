@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from feedbacks.models import Feedback
+from feedbacks.models import Category
 
 
-class FeedbackSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Feedback
+        model = Category
         fields = '__all__'

@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 from django.views import generic
+from django.views.generic import TemplateView
 
 from feedbacks.admin_views import FeedbackUpdateView, FeedbackNoteCreateView, FeedbackListView
 from feedbacks.views import FeedbackCreateView, EnquireFeedbackView, \
-    EnquireFeedbackSearchView
+    EnquireFeedbackSearchView, RetrieveCategoryView
+from orgs.views import get_public_key
 
 urlpatterns = [
     path(r'', generic.RedirectView.as_view(url='/feedbacks/new', permanent=False)),
@@ -32,7 +34,15 @@ urlpatterns = [
     path('feedbacks/<uuid:pk>', EnquireFeedbackView.as_view(), name='feedback-detail'),
     path('feedbacks/<uuid:pk>/update', login_required(FeedbackUpdateView.as_view()), name='feedback-update'),
     path('feedbacks/<uuid:pk>/notes/new', login_required(FeedbackNoteCreateView.as_view()), name='feedback_note-new'),
+
+    path('encryption/setKey',
+         login_required(TemplateView.as_view(template_name='feedbacks/admin/encryption_set_key.html')),
+         name='encryption-set-key'),
+
     path('accounts/', include('allauth.urls')),
+
+    path('api/categories/<uuid:pk>', RetrieveCategoryView.as_view(), name='category-single'),
+    path('api/organisations/<uuid:pk>/publicKey', get_public_key, name='get-public-key'),
 ]
 
 if settings.DEBUG:

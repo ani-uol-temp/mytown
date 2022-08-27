@@ -33,8 +33,11 @@
                     <a class="navbar-item" href="/feedbacks/new">
                         User Mode
                     </a>
-                    <a class="navbar-item {% if request.resolver_match.url_name == "feedback-list" %}is-active{% endif %}" href="/feedbacks">
+                    <a class="navbar-item {% if request.resolver_match.url_name == "feedback-list" %}is-active{% endif %}" href="{% url "feedback-list" %}">
                         Feedbacks
+                    </a>
+                    <a class="navbar-item {% if request.resolver_match.url_name == "encryption-set-key" %}is-active{% endif %}" href="{% url "encryption-set-key" %}">
+                        Encryption
                     </a>
                 </div>
 

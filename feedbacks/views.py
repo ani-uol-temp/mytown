@@ -1,12 +1,12 @@
-from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, FormView
-from rest_framework import viewsets, mixins
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
 
 from feedbacks.forms import SearchForm
-from feedbacks.models import Feedback
-from feedbacks.serializers import FeedbackSerializer
+from feedbacks.models import Feedback, Category
+from feedbacks.serializers import CategorySerializer
 
 
 class FeedbackCreateView(CreateView):
@@ -48,3 +48,9 @@ class EnquireFeedbackView(DetailView):
     model = Feedback
     context_object_name = 'feedback'
     template_name = 'feedbacks/feedback_view.html'
+
+
+class RetrieveCategoryView(generics.RetrieveAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
