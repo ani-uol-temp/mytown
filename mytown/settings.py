@@ -101,6 +101,7 @@ WSGI_APPLICATION = 'mytown.wsgi.application'
 
 DATABASES = {
     'default': env.db(),
+    'test': env.db_url('TEST_DATABASE_URL', default='sqlite:////tmp/db.test.sqlite3'),
 }
 
 # Password validation

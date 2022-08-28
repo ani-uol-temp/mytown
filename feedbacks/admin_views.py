@@ -9,6 +9,7 @@ from django.views.generic import CreateView, DetailView, ListView
 from feedbacks.forms import FeedbackNoteForm
 from feedbacks.models import Feedback, FeedbackNote
 
+
 class PermissionRequiredMixin:
     permissions = []
 
@@ -24,7 +25,7 @@ class PermissionRequiredMixin:
 
 @method_decorator(login_required, 'dispatch')
 class FeedbackUpdateView(PermissionRequiredMixin, SuccessMessageMixin, DetailView):
-    permissions = ['change_feedback']
+    permissions = ['feedbacks.change_feedback']
 
     model = Feedback
     template_name = 'feedbacks/admin/feedback_update.html'
@@ -66,7 +67,7 @@ class FeedbackUpdateView(PermissionRequiredMixin, SuccessMessageMixin, DetailVie
 
 @method_decorator(login_required, 'dispatch')
 class FeedbackNoteCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
-    permissions = ['add_feedbacknote']
+    permissions = ['feedbacks.add_feedbacknote']
     model = FeedbackNote
     form_class = FeedbackNoteForm
     template_name = 'feedbacks/admin/feedback_note_create.html'
@@ -89,11 +90,12 @@ class FeedbackNoteCreateView(PermissionRequiredMixin, SuccessMessageMixin, Creat
 
 @method_decorator(login_required, 'dispatch')
 class FeedbackListView(PermissionRequiredMixin, SuccessMessageMixin, ListView):
-    permissions = ['change_feedback']
+    permissions = ['feedbacks.change_feedback']
     model = Feedback
     template_name = 'feedbacks/admin/feedback_list.html'
     paginate_by = 10
 
     def get_queryset(self):
-        return super().get_queryset().order_by('-created_at')
-
+        return Feedback.objects \
+            .belongs_to_organisation_of(user=self.request.user) \
+            .order_by('-created_at')

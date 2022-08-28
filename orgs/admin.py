@@ -20,3 +20,9 @@ class OrganisationAdmin(admin.ModelAdmin):
     list_display = ['name', 'created_at']
     ordering = ['name']
     inlines = [OrganisationMembershipInlineAdmin, CategoryInlineAdmin]
+
+
+@admin.register(OrganisationMembership)
+class OrganisationMembershipAdmin(admin.ModelAdmin):
+    list_display = ['user', 'organisation', 'role', 'created_at']
+    ordering = ['organisation', 'user']

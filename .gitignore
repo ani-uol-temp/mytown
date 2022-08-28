@@ -343,6 +343,6 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/django,python,jetbrains+all
 
-media_files/*
+#media_files/*
 !media_files/.keep
 requirements.txt

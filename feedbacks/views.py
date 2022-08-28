@@ -4,14 +4,14 @@ from django.views.generic import CreateView, DetailView, FormView
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 
-from feedbacks.forms import SearchForm
+from feedbacks.forms import SearchForm, FeedbackCreateForm
 from feedbacks.models import Feedback, Category
 from feedbacks.serializers import CategorySerializer
 
 
 class FeedbackCreateView(CreateView):
     model = Feedback
-    fields = ['title', 'description', 'category', 'photo_1', 'photo_2', 'photo_3']
+    form_class = FeedbackCreateForm
     template_name = 'feedbacks/feedback_create.html'
     success_url = '/feedbacks/new'
     success_message = "Your Feedback (ID %(calculated_field)s) was created successfully! " \

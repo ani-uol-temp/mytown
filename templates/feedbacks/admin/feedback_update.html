@@ -1,13 +1,14 @@
 {% extends 'bulma/admin-base.html' %}
 {% load bulma_tags %}
 {% load static %}
+{% load deslugify %}
 
 {% block title %}View Feedback{% endblock %}
 
 {% block content %}
     <div>
         <p><strong>Feedback ID</strong>: <span class="is-family-monospace">{{ feedback.id }}</span></p>
-        <p><strong>Status</strong>: {{ feedback.status | capfirst }}</p>
+        <p><strong>Status</strong>: {{ feedback.status | deslugify | capfirst }}</p>
         <p><strong>Organisation</strong>: {{ feedback.organisation.name | capfirst }}</p>
         <p><strong>Category</strong>: {{ feedback.category.title | capfirst }}</p>
         <p><strong>Filed on</strong>: {{ feedback.created_at | date }}</p>
@@ -23,7 +24,7 @@
     <form method="POST">
         {% csrf_token %}
         {% for transition in transitions %}
-            <button type="submit" name="action" value="{{ transition.name }}" class="button is-info">{{ transition.name }}</button>
+            <button type="submit" name="action" value="{{ transition.name }}" class="button is-info">{{ transition.name | deslugify | capfirst }}</button>
         {% endfor %}
     </form>
     <br>

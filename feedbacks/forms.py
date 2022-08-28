@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from django.forms import Form, fields, ModelForm, RadioSelect
+from django.forms import Form, fields, ModelForm, TextInput
 from django.utils.translation import gettext_lazy as _
 
 from feedbacks.models import Feedback, FeedbackNote
@@ -34,3 +34,12 @@ class FeedbackNoteForm(ModelForm):
         self.instance.created_by = self.user
         self.instance.feedback_id = self.feedback_id
         return super().save(commit)
+
+
+class FeedbackCreateForm(ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['title', 'description', 'category', 'photo_1', 'photo_2', 'photo_3']
+        widgets = {
+            'title': TextInput()
+        }

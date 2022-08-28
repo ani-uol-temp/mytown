@@ -1,6 +1,7 @@
 import uuid
 
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django_fsm import FSMField, transition
 from django.utils.translation import gettext_lazy as _
@@ -15,14 +16,22 @@ class FeedbackStatus(models.TextChoices):
     INVALID = 'invalid', _('Invalid')
 
 
+class FeedbackManager(models.Manager):
+    def belongs_to_organisation_of(self, user: AbstractUser):
+        return self.filter(organisation__organisationmembership__user=user)
+
+
 class Feedback(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    title = models.CharField(max_length=255, help_text=_('A short title summarising your report.'))
+    title = models.TextField(help_text=_('A short title summarising your report.'))
     description = models.TextField(help_text=_('A description of what happened.'))
 
-    photo_1 = models.ImageField(upload_to='photos/', blank=True, null=True, default=None, verbose_name=_('Photo 1 (Optional)'))
-    photo_2 = models.ImageField(upload_to='photos/', blank=True, null=True, default=None, verbose_name=_('Photo 2 (Optional)'))
-    photo_3 = models.ImageField(upload_to='photos/', blank=True, null=True, default=None, verbose_name=_('Photo 3 (Optional)'))
+    photo_1 = models.ImageField(upload_to='photos/', blank=True, null=True, default=None,
+                                verbose_name=_('Photo 1 (Optional)'))
+    photo_2 = models.ImageField(upload_to='photos/', blank=True, null=True, default=None,
+                                verbose_name=_('Photo 2 (Optional)'))
+    photo_3 = models.ImageField(upload_to='photos/', blank=True, null=True, default=None,
+                                verbose_name=_('Photo 3 (Optional)'))
 
     status = FSMField(default=FeedbackStatus.NEW)
 
@@ -36,6 +45,8 @@ class Feedback(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = FeedbackManager()
 
     @transition(field=status, source=FeedbackStatus.NEW, target=FeedbackStatus.CLOSED)
     def close(self):
