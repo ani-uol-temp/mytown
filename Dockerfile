@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ./run.sh
+CMD ["./scripts/wait-for-it.sh", "postgresql:5432", "--", "./run.sh"]
