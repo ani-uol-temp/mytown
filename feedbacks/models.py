@@ -20,9 +20,9 @@ class Feedback(models.Model):
     title = models.CharField(max_length=255, help_text=_('A short title summarising your report.'))
     description = models.TextField(help_text=_('A description of what happened.'))
 
-    photo_1 = models.ImageField(blank=True, null=True, default=None, verbose_name=_('Photo 1 (Optional)'))
-    photo_2 = models.ImageField(blank=True, null=True, default=None, verbose_name=_('Photo 2 (Optional)'))
-    photo_3 = models.ImageField(blank=True, null=True, default=None, verbose_name=_('Photo 3 (Optional)'))
+    photo_1 = models.ImageField(upload_to='photos/', blank=True, null=True, default=None, verbose_name=_('Photo 1 (Optional)'))
+    photo_2 = models.ImageField(upload_to='photos/', blank=True, null=True, default=None, verbose_name=_('Photo 2 (Optional)'))
+    photo_3 = models.ImageField(upload_to='photos/', blank=True, null=True, default=None, verbose_name=_('Photo 3 (Optional)'))
 
     status = FSMField(default=FeedbackStatus.NEW)
 

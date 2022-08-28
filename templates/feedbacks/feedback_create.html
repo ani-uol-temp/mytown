@@ -6,7 +6,7 @@
 
 {% block content %}
     <h1 class="title">Submit New Feedback / Complaint</h1>
-    <form method="post" id="create-form">
+    <form method="post" id="create-form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form | bulma }}
         <a class="button is-success" id="submit-feedback" href="#">Submit Feedback</a>

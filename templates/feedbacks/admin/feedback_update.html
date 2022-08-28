@@ -6,7 +6,7 @@
 
 {% block content %}
     <div>
-        <p><strong>Feedback ID</strong>: {{ feedback.id }}</p>
+        <p><strong>Feedback ID</strong>: <span class="is-family-monospace">{{ feedback.id }}</span></p>
         <p><strong>Status</strong>: {{ feedback.status | capfirst }}</p>
         <p><strong>Organisation</strong>: {{ feedback.organisation.name | capfirst }}</p>
         <p><strong>Category</strong>: {{ feedback.category.title | capfirst }}</p>
@@ -26,6 +26,23 @@
             <button type="submit" name="action" value="{{ transition.name }}" class="button is-info">{{ transition.name }}</button>
         {% endfor %}
     </form>
+    <br>
+    <h3 class="subtitle">Photos</h3>
+    <div class="columns">
+        <div class="column is-4 is-12-mobile">
+            {% if feedback.photo_1 %}
+                <a href="{{ feedback.photo_1.url }}"><img src="{{ feedback.photo_1.url }}" alt=""></a> {% endif %}
+        </div>
+        <div class="column is-4 is-12-mobile">
+            {% if feedback.photo_2 %}
+                <a href="{{ feedback.photo_2.url }}"><img src="{{ feedback.photo_2.url }}" alt=""></a> {% endif %}
+        </div>
+
+        <div class="column is-4 is-12-mobile">
+            {% if feedback.photo_3 %}
+                <a href="{{ feedback.photo_3.url }}"><img src="{{ feedback.photo_3.url }}" alt=""></a> {% endif %}
+        </div>
+    </div>
 
     <br>
     <h1 class="subtitle">Updates</h1>
