@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  postgresql:
+    image: postgres:14.5
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - .data/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  django:
+    build: .
+    env_file:
+      - .env.docker
+    volumes:
+      - .:/opt/app/mytown
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgresql

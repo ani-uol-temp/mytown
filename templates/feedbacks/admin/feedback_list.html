@@ -8,7 +8,7 @@
     <table class="table is-striped">
         <thead>
         <tr>
-            <th>Title</th>
+            <th>ID</th>
             <th>Status</th>
             <th>Created at</th>
             <th>Updated at</th>
@@ -17,7 +17,7 @@
         <tbody>
         {% for feedback in object_list %}
             <tr>
-                <td><a href="{% url "feedback-update" pk=feedback.pk %}">{{ feedback.title | truncatechars:25 }}</a>
+                <td><a href="{% url "feedback-update" pk=feedback.pk %}">{{ feedback.id }}</a>
                 </td>
                 <td>{{ feedback.status }}</td>
                 <td>{{ feedback.created_at | date }} {{ feedback.created_at | time }}</td>

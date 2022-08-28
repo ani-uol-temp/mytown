@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from feedbacks.models import Feedback, FeedbackNote
+from feedbacks.models import Feedback, FeedbackNote, Category
 
 
 class FeedbackNoteInlineAdmin(admin.StackedInline):
@@ -19,3 +19,8 @@ class FeedbackAdmin(admin.ModelAdmin):
         'title', 'description',
         'photo_1', 'photo_2', 'photo_3',
     ]
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['title', 'associated_organisation', 'created_at']

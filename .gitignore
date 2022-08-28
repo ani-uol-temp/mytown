@@ -132,7 +132,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+.env.docker
 .venv
 env/
 venv/
@@ -345,3 +345,4 @@ fabric.properties
 
 media_files/*
 !media_files/.keep
+requirements.txt
