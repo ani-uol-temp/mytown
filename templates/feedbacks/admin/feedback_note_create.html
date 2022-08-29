@@ -1,5 +1,6 @@
 {% extends 'bulma/admin-base.html' %}
 {% load bulma_tags %}
+{% load static %}
 
 {% block title %}Submit Feedback Note{% endblock %}
 
@@ -7,9 +8,9 @@
     <h1 class="title">Submit Feedback Note</h1>
 
     <blockquote>
-        <h5 class="title">{{ feedback.title }}</h5>
+        <h5 class="title" id="id_title_view">{{ feedback.title }}</h5>
         <h6 class="subtitle">{{ feedback.created_at | date }}{{ feedback.created_at | time }}</h6>
-        <section>{{ feedback.description }}</section>
+        <section id="id_description_view">{{ feedback.description }}</section>
     </blockquote>
 
     <form method="post">
@@ -18,3 +19,8 @@
         <input class="button is-success" type="submit" value="Submit Note">
     </form>
 {% endblock content %}
+
+{% block extra_javascript %}
+    <script type="text/javascript" src="{% static "js/jsencrypt.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/admin.js" %}"></script>
+{% endblock %}

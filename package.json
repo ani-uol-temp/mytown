@@ -1,0 +1,22 @@
+{
+  "name": "mytown",
+  "version": "1.0.0",
+  "description": "One-stop Government Services Portal.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ani-uol-temp/mytown.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ani-uol-temp/mytown/issues"
+  },
+  "homepage": "https://github.com/ani-uol-temp/mytown#readme",
+  "dependencies": {
+    "cypress": "^10.6.0"
+  }
+}

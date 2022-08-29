@@ -346,3 +346,4 @@ fabric.properties
 #media_files/*
 !media_files/.keep
 requirements.txt
+node_modules
